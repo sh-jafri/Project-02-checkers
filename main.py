@@ -118,8 +118,8 @@ def menu_buttons():
     startgame_icon_resized = pygame.transform.scale(startgame_icon, icon_size)
     startgame_icon_rect = startgame_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + (button_height - icon_size[1] - 50) // 2))
 
-    color = (173, 216, 230) # grey
-    cursor_color = (0, 0, 139) # darker grey
+    color = (173, 216, 230) # blue
+    cursor_color = (0, 0, 255) # light blue
     position = (Width // 2-150, Height // 3-25)
     size = (300, 50)  # width, height
         
