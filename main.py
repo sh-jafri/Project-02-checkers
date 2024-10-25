@@ -666,7 +666,7 @@ def reddit_function():
 
     #Third message
     reddit_font = pygame.font.Font(None, 25)
-    reddit_text = reddit_font.render(f"{reddit_title}", True, (255, 255, 255))
+    reddit_text = reddit_font.render(f"{reddit_title}", True, (0, 0, 0))
     reddit_rect = reddit_text.get_rect(center=(Width // 2, 145))
     reddit_screen.blit(reddit_text, reddit_rect)
 
@@ -675,6 +675,15 @@ def reddit_function():
     reddit_text = reddit_font.render(f"{reddit_permalink}", True, (255, 255, 255))
     reddit_rect = reddit_text.get_rect(center=(Width // 2, 170))
     reddit_screen.blit(reddit_text, reddit_rect)
+
+    #Fifth message
+    reddit_font = pygame.font.Font(None, 25)
+    reddit_text = reddit_font.render("Note: Clicking the Reddit button should have opened the link up on your default browser", True, (255, 255, 255))
+    reddit_rect = reddit_text.get_rect(center=(Width // 2, 195))
+    reddit_screen.blit(reddit_text, reddit_rect)
+
+
+    webbrowser.open(m.permalink)
 
     # Exit button to return back to menu
     exit_button_font = pygame.font.Font(None, 32)
