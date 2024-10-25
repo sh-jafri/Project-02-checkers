@@ -4,11 +4,10 @@ The main file holds menu operations for the game including sound, settings, lead
 
 """
 import pygame
+from game_state import KingState
 import redditwarp.SYNC
 import sys
 import webbrowser
-
-
 from SecondMenu import SecondMenu
 from constants import BLUE, YELLOW, RED, GREEN
 from ScoreManager import ScoreManager
@@ -68,6 +67,8 @@ credits_text2 = credits_font.render(credits2, True, (255, 255, 255))
 credits_rect2 = credits_text2.get_rect(center=(Width // 2, 670))
 
 second_menu_instance = SecondMenu(tracks)
+
+king_instance = KingState()
 def main():
     """
     The main function is the main menu of the game. It displays the title, message, and credits, and holds user interaction with buttons. 
@@ -94,6 +95,9 @@ def main():
                     exit()
                 elif buttons[6].collidepoint(event.pos):
                     reddit_function()
+                elif buttons[7].collidepoint(event.pos):
+                    king_instance.toggle()
+                    print(king_instance.bool())
                 # Check if the current song has finished, loop to next song
             elif event.type == SONG_END:
                 music_loop()
@@ -179,6 +183,33 @@ def menu_buttons():
         pygame.draw.rect(screen, color, button_rect_2)  # Stay the original color if the cursor is not hovering over
 
     screen.blit(settings_icon_resized, settings_icon_rect.topleft)  # Draw the icon after drawing the button
+    screen.blit(button_text, button_text_rect)
+
+    #King button
+    king_icon = pygame.image.load('pics/king_icon.png')
+    color = (128, 128, 128)  # Grey color for the button
+    cursor_color = (100, 100, 100)  # Darker grey for hover
+    position = (Width // 2 - 150, Height // 3 + 360)  # Adjust the vertical position as needed
+    size = (300, 50)
+
+    button_text = button_font.render("King Mode", True, (255, 255, 255))
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 385))
+
+    king_icon_resized = pygame.transform.scale(king_icon, icon_size)
+    king_icon_rect = king_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 360 + (button_height - icon_size[1]) // 2))
+
+    pygame.draw.rect(screen, color, pygame.Rect(position, size))
+    screen.blit(king_icon_resized, king_icon_rect.topleft)
+    screen.blit(button_text, button_text_rect)
+
+    mouse = pygame.mouse.get_pos()
+    button_rect_8 = pygame.Rect(position, size)
+    if button_rect_8.collidepoint(mouse):
+        pygame.draw.rect(screen, cursor_color, button_rect_8)
+    else:
+        pygame.draw.rect(screen, color, button_rect_8)
+
+    screen.blit(king_icon_resized, king_icon_rect.topleft)
     screen.blit(button_text, button_text_rect)
 
     # Tutorial button
@@ -344,7 +375,7 @@ def menu_buttons():
     screen.blit(reddit_icon_resized, reddit_icon_rect.topleft)  # Draw the icon after drawing the button
     screen.blit(button_text, button_text_rect)
 
-    return button_rect, button_rect_2, button_rect_3, button_rect_4, button_rect_5, button_rect_6, button_rect_7
+    return button_rect, button_rect_2, button_rect_3, button_rect_4, button_rect_5, button_rect_6, button_rect_7, button_rect_8
 
 def tutorial(): 
     """
@@ -447,7 +478,7 @@ def tutorial():
                     return  # exit tutorial and return to menu
             elif event.type == SONG_END:
                 music_loop()
-                
+
 def settings():
     """
     The settings function displays the settings screen. It displays the music button that allows the user to stop and play the music. It allows the user to exit 

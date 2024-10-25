@@ -6,6 +6,7 @@ The Pieces File holds the Pieces class which is responsible for managing the pie
 from constants import SQUARE_SIZE, GREY, KING
 import pygame
 
+
 class Piece:
     """
     The Piece class is responsible for managing the pieces, and contains functions to initialize a piece, calculate the position of a piece,
@@ -22,6 +23,8 @@ class Piece:
         self.col = col
         self.color = color
         self.king = False
+        if (king_instance == True):
+            self.king = True
         self.x = 0
         self.y = 0
         self.calc_pos()
