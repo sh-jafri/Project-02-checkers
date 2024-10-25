@@ -7,7 +7,6 @@ screen = pygame.display.set_mode([Width, Height])
 
 # function to display menu
 def menu_buttons():
-    global king_mode
     # PvP button
     color = (128, 128, 128) # grey
     cursor_color = (100, 100, 100) # darker grey
@@ -38,8 +37,8 @@ def menu_buttons():
     spacing = 10
 
     # King Mode Button
-    position = (50, button_height + spacing)  # Set button position
-    size = (300, button_height)  # Set button size
+    position = (Width // 2 - 150, Height // 3 + 360)  # Set button position
+    size = (300, 50)  # Set button size
 
     # Load King Mode icon
     king_icon = pygame.image.load('pics/king_icon.png')
@@ -59,11 +58,11 @@ def menu_buttons():
 
     # Handle mouse hover color change
     mouse = pygame.mouse.get_pos()
-    button_rect_2 = pygame.Rect(position, size)
-    if button_rect_2.collidepoint(mouse):
-        pygame.draw.rect(screen, cursor_color, button_rect_2)  # Change color when hovered over
+    button_rect_4 = pygame.Rect(position, size)
+    if button_rect_4.collidepoint(mouse):
+        pygame.draw.rect(screen, cursor_color, button_rect_4)  # Change color when hovered over
     else:
-        pygame.draw.rect(screen, color, button_rect_2)  # Keep original color if not hovered over
+        pygame.draw.rect(screen, color, button_rect_4)  # Keep original color if not hovered over
 
     screen.blit(king_icon_resized, king_icon_rect.topleft)  # Draw the icon again (ensuring it stays on top)
     screen.blit(button_text, button_text_rect)
@@ -134,7 +133,7 @@ def menu_buttons():
     screen.blit(tutorial_icon_resized, tutorial_icon_rect.topleft)  # Draw the icon after drawing the button
     screen.blit(button_text, button_text_rect)
 
-    return button_rect, button_rect_2, button_rect_3
+    return button_rect, button_rect_2, button_rect_3, button_rect_4
 
 def tutorial(): # tutorial prompt (subject to change text)
     # load image used in tutorial

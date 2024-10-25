@@ -4,6 +4,7 @@ The main file holds menu operations for the game including sound, settings, lead
 
 """
 import pygame
+from game_state import KingState
 from SecondMenu import SecondMenu
 from constants import BLUE, YELLOW, RED, GREEN
 from ScoreManager import ScoreManager
@@ -63,6 +64,8 @@ credits_text2 = credits_font.render(credits2, True, (255, 255, 255))
 credits_rect2 = credits_text2.get_rect(center=(Width // 2, 670))
 
 second_menu_instance = SecondMenu(tracks)
+
+king_instance = KingState()
 def main():
     """
     The main function is the main menu of the game. It displays the title, message, and credits, and holds user interaction with buttons. 
@@ -85,6 +88,9 @@ def main():
                     settings()
                 elif buttons[4].collidepoint(event.pos): # if mouse is clicked on leaderboard button (not yet implemented)
                     board_customization()
+                elif buttons[5].collidepoint(event.pos):
+                    king_instance.toggle()
+                    print(king_instance.bool())
                 # Check if the current song has finished, loop to next song
             elif event.type == SONG_END:
                 music_loop()
@@ -298,7 +304,7 @@ def menu_buttons():
     screen.blit(board_icon_resized, board_icon_rect.topleft)  # Draw the icon after drawing the button
     screen.blit(button_text, button_text_rect)
 
-    return button_rect, button_rect_2, button_rect_3, button_rect_4, button_rect_5
+    return button_rect, button_rect_2, button_rect_3, button_rect_4, button_rect_5, button_rect_6
 
 def tutorial(): 
     """
