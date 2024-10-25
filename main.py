@@ -8,6 +8,7 @@ import redditwarp.SYNC
 import sys
 import webbrowser
 
+
 from SecondMenu import SecondMenu
 from constants import BLUE, YELLOW, RED, GREEN
 from ScoreManager import ScoreManager
