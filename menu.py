@@ -7,6 +7,7 @@ screen = pygame.display.set_mode([Width, Height])
 
 # function to display menu
 def menu_buttons():
+    global king_mode
     # PvP button
     color = (128, 128, 128) # grey
     cursor_color = (100, 100, 100) # darker grey
@@ -16,7 +17,7 @@ def menu_buttons():
     button_font = pygame.font.Font(None, 32)
     button_text = button_font.render("Start Game Against Player", True, (255, 255, 255)) # Button text and color
     button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3))
-    
+
     # Create button on screen using position and size parameters
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
@@ -30,7 +31,43 @@ def menu_buttons():
         pygame.draw.rect(screen, color, button_rect) # stay original color if cursor not hovering over
 
     screen.blit(button_text, button_text_rect)
-    
+
+    # Define icon size, button height, and spacing at the start
+    icon_size = (45, 45)
+    button_height = 50
+    spacing = 10
+
+    # King Mode Button
+    position = (50, button_height + spacing)  # Set button position
+    size = (300, button_height)  # Set button size
+
+    # Load King Mode icon
+    king_icon = pygame.image.load('pics/king_icon.png')
+    king_icon_resized = pygame.transform.scale(king_icon, icon_size)
+
+    # Render button text
+    button_text = button_font.render("King Mode", True, (255, 255, 255))  # Button text and color
+    button_text_rect = button_text.get_rect(center=(position[0] + size[0] // 2, position[1] + size[1] // 2))
+
+    # Draw King Mode button
+    pygame.draw.rect(screen, color, pygame.Rect(position, size))
+    screen.blit(button_text, button_text_rect)
+
+    # Display King Mode icon
+    king_icon_rect = king_icon_resized.get_rect(topleft=(position[0] + 10, position[1] + (button_height - icon_size[1]) // 2))
+    screen.blit(king_icon_resized, king_icon_rect)
+
+    # Handle mouse hover color change
+    mouse = pygame.mouse.get_pos()
+    button_rect_2 = pygame.Rect(position, size)
+    if button_rect_2.collidepoint(mouse):
+        pygame.draw.rect(screen, cursor_color, button_rect_2)  # Change color when hovered over
+    else:
+        pygame.draw.rect(screen, color, button_rect_2)  # Keep original color if not hovered over
+
+    screen.blit(king_icon_resized, king_icon_rect.topleft)  # Draw the icon again (ensuring it stays on top)
+    screen.blit(button_text, button_text_rect)
+
     # Settings Button    
     settings_icon = pygame.image.load('pics/settings_icon.png')
 

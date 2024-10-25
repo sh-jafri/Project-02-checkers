@@ -172,6 +172,33 @@ def menu_buttons():
     screen.blit(settings_icon_resized, settings_icon_rect.topleft)  # Draw the icon after drawing the button
     screen.blit(button_text, button_text_rect)
 
+    #King button
+    king_icon = pygame.image.load('pics/king_icon.png')
+    color = (128, 128, 128)  # Grey color for the button
+    cursor_color = (100, 100, 100)  # Darker grey for hover
+    position = (Width // 2 - 150, Height // 3 + 360)  # Adjust the vertical position as needed
+    size = (300, 50)
+
+    button_text = button_font.render("King Mode", True, (255, 255, 255))
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 385))
+
+    king_icon_resized = pygame.transform.scale(king_icon, icon_size)
+    king_icon_rect = king_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 360 + (button_height - icon_size[1]) // 2))
+
+    pygame.draw.rect(screen, color, pygame.Rect(position, size))
+    screen.blit(king_icon_resized, king_icon_rect.topleft)
+    screen.blit(button_text, button_text_rect)
+
+    mouse = pygame.mouse.get_pos()
+    button_rect_6 = pygame.Rect(position, size)
+    if button_rect_6.collidepoint(mouse):
+        pygame.draw.rect(screen, cursor_color, button_rect_6)
+    else:
+        pygame.draw.rect(screen, color, button_rect_6)
+
+    screen.blit(king_icon_resized, king_icon_rect.topleft)
+    screen.blit(button_text, button_text_rect)
+
     # Tutorial button
     tutorial_icon = pygame.image.load('pics/tutorial_icon.png')
 
@@ -374,7 +401,7 @@ def tutorial():
                     return  # exit tutorial and return to menu
             elif event.type == SONG_END:
                 music_loop()
-                
+
 def settings():
     """
     The settings function displays the settings screen. It displays the music button that allows the user to stop and play the music. It allows the user to exit 
