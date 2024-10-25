@@ -4,7 +4,10 @@ The main file holds menu operations for the game including sound, settings, lead
 
 """
 import pygame
+import redditwarp.SYNC
 import sys
+import webbrowser
+
 
 from SecondMenu import SecondMenu
 from constants import BLUE, YELLOW, RED, GREEN
@@ -89,6 +92,8 @@ def main():
                     board_customization()
                 elif buttons[5].collidepoint(event.pos): #if mouse is clicked on the exit button
                     exit()
+                elif buttons[6].collidepoint(event.pos):
+                    reddit_function()
                 # Check if the current song has finished, loop to next song
             elif event.type == SONG_END:
                 music_loop()
@@ -307,7 +312,39 @@ def menu_buttons():
     screen.blit(exit_icon_resized, exit_icon_rect.topleft)  # Draw the icon after drawing the button
     screen.blit(button_text, button_text_rect)
 
-    return button_rect, button_rect_2, button_rect_3, button_rect_4, button_rect_5, button_rect_6
+    # Reddit Button
+    reddit_icon = pygame.image.load('pics/reddit_icon.png')
+
+    color = (80, 80, 80) # grey
+    cursor_color = (60, 60, 60) # darker grey
+    position = (Width // 3 + 350, Height // 3 + 360)  # Adjust the vertical position as needed
+    size = (125, 50)  # width, height
+
+    button_font = pygame.font.Font(None, 32)
+    button_text = button_font.render("Reddit", True, (255, 255, 255)) # Button text and color
+    button_text_rect = button_text.get_rect(center=(Width // 3 + 410 + 20, Height // 3 + 385))  # Adjust the vertical position as needed
+    pygame.draw.rect(screen, color, pygame.Rect(position, size))
+    screen.blit(button_text, button_text_rect)
+
+    # Draw the icon next to the text with the specified size
+    reddit_icon_resized = pygame.transform.scale(reddit_icon, icon_size)
+    reddit_icon_rect = exit_icon_resized.get_rect(topleft=(Width // 3 + 340 + 10, Height // 3 + 360 + (button_height - icon_size[1]) // 2))
+
+    pygame.draw.rect(screen, color, pygame.Rect(position, size))
+    screen.blit(button_text, button_text_rect)
+    
+    # Used to indicate if cursor is hovering over button. If so, button will be darker
+    mouse = pygame.mouse.get_pos()
+    button_rect_7 = pygame.Rect(position, size)
+    if button_rect_7.collidepoint(mouse):
+        pygame.draw.rect(screen, cursor_color, button_rect_7)  # Change color when cursor hovered over
+    else:
+        pygame.draw.rect(screen, color, button_rect_7) # stay original color if cursor not hovering over
+
+    screen.blit(reddit_icon_resized, reddit_icon_rect.topleft)  # Draw the icon after drawing the button
+    screen.blit(button_text, button_text_rect)
+
+    return button_rect, button_rect_2, button_rect_3, button_rect_4, button_rect_5, button_rect_6, button_rect_7
 
 def tutorial(): 
     """
@@ -592,6 +629,80 @@ def board_customization():
                     second_menu_instance.color = YELLOW
                 if green_square_rect.collidepoint(event.pos): # make board green
                     second_menu_instance.color = GREEN
+            elif event.type == SONG_END:
+                music_loop()
+
+
+def reddit_function(): 
+    """
+    The reddit function displays the a title and link to a reddit post. It displays the reddit text, and allows the user to exit the tutorial after clicking the exit button.
+    The reddit function informs the user on current popular reddit post.
+    """
+    
+    #code for temple's reddit page
+    client = redditwarp.SYNC.Client()
+    m = next(client.p.subreddit.pull.top('Temple', amount=1, time='hour'))
+    #this prints to the terminal
+    print(m.title)
+    print(m.permalink)
+
+    reddit_title = m.title
+    reddit_permalink = m.permalink
+
+    # load image used in tutorial
+    reddit_screen = pygame.display.set_mode([Width, Height])
+    reddit_screen.fill((128, 128, 128))
+
+    # First message
+    reddit_font = pygame.font.Font(None, 64)
+    reddit_text = reddit_font.render("This is the Reddit Screen", True, (255, 255, 255))
+    reddit_rect = reddit_text.get_rect(center=(Width // 2, 50))
+    reddit_screen.blit(reddit_text, reddit_rect)
+
+    # Second message
+    reddit_font = pygame.font.Font(None, 32)
+    reddit_text = reddit_font.render("The current most popular reddit post title and URL is shown", True, (255, 255, 255))
+    reddit_rect = reddit_text.get_rect(center=(Width // 2, 105))
+    reddit_screen.blit(reddit_text, reddit_rect)
+
+    #Third message
+    reddit_font = pygame.font.Font(None, 25)
+    reddit_text = reddit_font.render(f"{reddit_title}", True, (0, 0, 0))
+    reddit_rect = reddit_text.get_rect(center=(Width // 2, 145))
+    reddit_screen.blit(reddit_text, reddit_rect)
+
+    #Fourth message
+    reddit_font = pygame.font.Font(None, 25)
+    reddit_text = reddit_font.render(f"{reddit_permalink}", True, (255, 255, 255))
+    reddit_rect = reddit_text.get_rect(center=(Width // 2, 170))
+    reddit_screen.blit(reddit_text, reddit_rect)
+
+    #Fifth message
+    reddit_font = pygame.font.Font(None, 25)
+    reddit_text = reddit_font.render("Note: Clicking the Reddit button should have opened the link up on your default browser", True, (255, 255, 255))
+    reddit_rect = reddit_text.get_rect(center=(Width // 2, 195))
+    reddit_screen.blit(reddit_text, reddit_rect)
+
+
+    webbrowser.open(m.permalink)
+
+    # Exit button to return back to menu
+    exit_button_font = pygame.font.Font(None, 32)
+    exit_button_text = exit_button_font.render("Exit Reddit Screen", True, (255, 255, 255))
+    exit_button_rect = exit_button_text.get_rect(center=(Width // 2, Height - 50))
+    pygame.draw.rect(reddit_screen, (64, 64, 64), exit_button_rect.inflate(20, 10))
+    reddit_screen.blit(exit_button_text, exit_button_rect)
+
+    pygame.display.flip()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_button_rect.collidepoint(event.pos):  # if exit reddit screen button is clicked
+                    return  # exit reddit screen and return to menu
             elif event.type == SONG_END:
                 music_loop()
 
