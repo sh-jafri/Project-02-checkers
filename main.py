@@ -4,7 +4,7 @@ The main file holds menu operations for the game including sound, settings, lead
 
 """
 import pygame
-from game_state import KingState
+from game_state import king_mode, toggle_king_mode
 import redditwarp.SYNC
 import sys
 import webbrowser
@@ -68,7 +68,6 @@ credits_rect2 = credits_text2.get_rect(center=(Width // 2, 670))
 
 second_menu_instance = SecondMenu(tracks)
 
-king_instance = KingState()
 def main():
     """
     The main function is the main menu of the game. It displays the title, message, and credits, and holds user interaction with buttons. 
@@ -96,8 +95,8 @@ def main():
                 elif buttons[6].collidepoint(event.pos):
                     reddit_function()
                 elif buttons[7].collidepoint(event.pos):
-                    king_instance.toggle()
-                    print(king_instance.bool())
+                    toggle_king_mode()
+                    print(king_mode)
                 # Check if the current song has finished, loop to next song
             elif event.type == SONG_END:
                 music_loop()
