@@ -1,5 +1,6 @@
 # game_state.py
-king_mode = False
+global king_mode 
+king_mode= False
 
 def toggle_king_mode():
     global king_mode  # Access the global variable

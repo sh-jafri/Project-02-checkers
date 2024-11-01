@@ -4,6 +4,7 @@ The Pieces File holds the Pieces class which is responsible for managing the pie
 """
 
 from constants import SQUARE_SIZE, GREY, KING
+from game_state import king_mode
 import pygame
 
 
@@ -19,11 +20,12 @@ class Piece:
         """
         The init function initializes the Piece class with a row, column, and color, and calculates the position of the piece.
         """
+        global king_
         self.row = row
         self.col = col
         self.color = color
         self.king = False
-        if (king_instance == True):
+        if (king_mode == True):
             self.king = True
         self.x = 0
         self.y = 0
